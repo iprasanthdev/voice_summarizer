@@ -11,4 +11,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "transcriptions#new"
+  get '/transcribe', to: 'transcriptions#new'
+  resources :transcriptions, only: [:create, :show] do
+    member do
+      get :summary
+    end
+  end
 end
