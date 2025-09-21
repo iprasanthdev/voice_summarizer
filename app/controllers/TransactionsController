@@ -1,0 +1,39 @@
+class TranscriptionsController < ApplicationController
+  protect_from_forgery with: :exception
+
+  def new
+    # renders app/views/transcriptions/new.html.erb
+  end
+
+  # Accepts POST with live_text and optional audio file (multipart)
+  def create
+    transcription = Transcription.create!(live_client_text: params[:live_text], status: "processing")
+    transcription.audio_blob.attach(params[:audio]) if params[:audio].present?
+
+    begin
+      # Generate summary synchronously for demo (OK for assignment)
+      summary = SummarizationService.new(transcription.full_text).generate!
+      transcription.update!(summary: summary, status: "completed")
+      render json: { id: transcription.id, summary: summary, server_transcript: transcription.server_transcript }, status: :created
+    rescue => e
+      transcription.update!(status: "failed")
+      render json: { error: e.message }, status: 500
+    end
+  end
+
+  def show
+    t = Transcription.find(params[:id])
+    render json: t.slice(:id, :live_client_text, :server_transcript, :summary, :status)
+  end
+
+  def summary
+    t = Transcription.find(params[:id])
+    if t.summary.present?
+      render json: { summary: t.summary }
+    else
+      summary = SummarizationService.new(t.full_text).generate!
+      t.update!(summary: summary)
+      render json: { summary: summary }
+    end
+  end
+end
