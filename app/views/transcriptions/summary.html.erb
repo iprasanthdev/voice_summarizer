@@ -1,0 +1,16 @@
+<div class="max-w-2xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4"> Transcription</h1>
+
+  <div class="border rounded p-4 bg-gray-50 mb-6">
+    <%= @transcription.live_client_text.presence || "No transcription available." %>
+  </div>
+
+  <h2 class="text-xl font-semibold mb-2"> Summary</h2>
+  <div class="border rounded p-4 bg-yellow-50">
+    <%= @transcription.summary.presence || "Summary not available." %>
+  </div>
+
+  <div class="mt-6">
+    <%= link_to "Record Again", transcribe_path, class: "text-blue-600 underline" %>
+  </div>
+</div>
