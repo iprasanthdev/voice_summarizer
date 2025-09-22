@@ -6,7 +6,7 @@ RSpec.describe "Transcriptions", type: :request do
     stub_request(:post, /router.huggingface.co/).
       to_return(
         status: 200,
-        body: [{ "summary_text" => "Stubbed summary." }].to_json,
+        body: [ { "summary_text" => "Stubbed summary." } ].to_json,
         headers: { "Content-Type" => "application/json" }
       )
 

@@ -13,12 +13,11 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "transcriptions#new"
 
-  resources :transcriptions, only: [:new, :create] do
+  resources :transcriptions, only: [ :new, :create ] do
     member do
       get :summary
     end
   end
 
   get "/transcribe", to: "transcriptions#new", as: :transcribe
-
 end

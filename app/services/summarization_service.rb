@@ -1,5 +1,5 @@
-require 'faraday'
-require 'json'
+require "faraday"
+require "json"
 
 class SummarizationService
   def initialize(text)
@@ -22,8 +22,8 @@ class SummarizationService
 
     begin
       response = conn.post do |req|
-        req.headers['Authorization'] = "Bearer #{api_key}"
-        req.headers['Content-Type']  = 'application/json'
+        req.headers["Authorization"] = "Bearer #{api_key}"
+        req.headers["Content-Type"]  = "application/json"
         req.body = {
           inputs: @text,
           parameters: {
